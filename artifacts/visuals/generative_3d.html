@@ -128,8 +128,8 @@
         const edgeRadius = Math.max(0.06, nodeRadius * 0.35)
         const edgeGeom = new THREE.CylinderGeometry(edgeRadius, edgeRadius, 1.0, 10, 1, true)
         const edgeMat = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          opacity: 0.85,
+          color: 0xff00ff,
+          opacity: 1.0,
           transparent: true,
           depthTest: false,
           depthWrite: false,
@@ -183,6 +183,12 @@
         const edgeCount = document.getElementById('edgeCount')
         const resetBtn = document.getElementById('reset')
         edgeCount.textContent = `(${validEdges.length} edges)`
+
+        // Make the scaling visible for debugging.
+        const scaleNote = document.createElement('span')
+        scaleNote.className = 'muted'
+        scaleNote.textContent = `scale=${SCALE.toFixed(1)}`
+        document.querySelector('#ui .panel.row')?.appendChild(scaleNote)
 
         showEdges.addEventListener('change', () => {
           edgeGroup.visible = showEdges.checked
