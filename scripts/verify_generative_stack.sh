@@ -19,13 +19,26 @@ echo ""
 # Step 1: Sorry/Admit Scan
 echo "[1/5] Scanning for sorry/admit..."
 SORRY_OUT="$REPORTS_DIR/SORRY_SCAN.txt"
-if grep -rn "sorry\|admit" "$BUNDLE_DIR/HeytingLean/" --include="*.lean" > "$SORRY_OUT" 2>&1; then
-    echo "CRITICAL: Found sorry/admit in codebase!"
-    cat "$SORRY_OUT"
-    exit 1
+# NOTE: We search for the *Lean tokens* `sorry` and `admit` as whole words.
+# This avoids false positives such as the English word "admits" in comments/docstrings.
+if command -v rg >/dev/null 2>&1; then
+    if rg -n --glob '!**/.lake/**' --glob '*.lean' '\\b(sorry|admit)\\b' "$BUNDLE_DIR/HeytingLean/" > "$SORRY_OUT" 2>&1; then
+        echo "CRITICAL: Found sorry/admit in codebase!"
+        cat "$SORRY_OUT"
+        exit 1
+    else
+        echo "PASS: No sorry/admit found"
+        echo "(none)" > "$SORRY_OUT"
+    fi
 else
-    echo "PASS: No sorry/admit found"
-    echo "(none)" > "$SORRY_OUT"
+    if grep -RInE "\\b(sorry|admit)\\b" "$BUNDLE_DIR/HeytingLean/" --include="*.lean" > "$SORRY_OUT" 2>&1; then
+        echo "CRITICAL: Found sorry/admit in codebase!"
+        cat "$SORRY_OUT"
+        exit 1
+    else
+        echo "PASS: No sorry/admit found"
+        echo "(none)" > "$SORRY_OUT"
+    fi
 fi
 echo ""
 

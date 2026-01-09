@@ -30,6 +30,7 @@
         <a href="../../index.html">&larr; index</a>
         <input id="q" type="text" placeholder="Search declarations (substring)..." />
         <label><input id="showEdges" type="checkbox" checked /> edges</label>
+        <span id="edgeCount" class="muted"></span>
         <button id="fit">Fit</button>
       </div>
       <div class="panel muted">Pan: drag · Zoom: wheel · Select: click</div>
@@ -50,7 +51,9 @@
         const details = document.getElementById('details')
         const q = document.getElementById('q')
         const showEdges = document.getElementById('showEdges')
+        const edgeCount = document.getElementById('edgeCount')
         const fitBtn = document.getElementById('fit')
+        edgeCount.textContent = `(${edges.length} edges)`
 
         const colorForFamily = (fam) => {
           const map = {
@@ -167,8 +170,8 @@
           // edges
           if (showEdges.checked) {
             // Curved edges are much more visible when kNN connections are very short in screen space.
-            ctx.lineWidth = 1.25
-            ctx.strokeStyle = 'rgba(207,216,220,0.78)'
+            ctx.lineWidth = 2.25
+            ctx.strokeStyle = 'rgba(240,248,255,0.92)'
             ctx.beginPath()
             const visSet = new Set(vis)
             for (const [i,j] of edges){

@@ -3,6 +3,7 @@
 lake-packages/
 build/
 .elan/
+reports/
 
 # OS files
 .DS_Store
