@@ -34,14 +34,20 @@ This repository contains a **standalone, verifiable** Lean 4 formalization of th
 curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
 
 # 2. Clone and build
-git clone <this-repo>
-cd GenerativeStack
+git clone https://github.com/Abraxas1010/generative-stack-lean.git
+cd generative-stack-lean
 lake update
 lake build --wfail
 
 # 3. Verify with our script
 ./scripts/verify_generative_stack.sh
 ```
+
+### Interactive Visualizations (GitHub Pages)
+
+- **Landing Page:** https://abraxas1010.github.io/generative-stack-lean/
+- **2D Proof Map:** https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_2d.html
+- **3D Proof Map:** https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_3d.html
 
 ## Key Theorems
 
@@ -87,13 +93,51 @@ HeytingLean/
     └── UnifiedMathSanity.lean
 ```
 
-## Visualizations
+## Proof Visualizations
 
-See `artifacts/visuals/` for:
-- `generative_2d.html` - Interactive 2D UMAP proof map
-- `generative_3d.html` - Interactive 3D UMAP proof map
-- `import_graph.svg` - Module dependency graph
-- `generative_stack_overview.svg` - Layer architecture
+Explore the proof structure in 2D and 3D:
+
+<table>
+<tr>
+<td align="center" width="50%">
+<strong>2D Proof Map</strong><br/>
+<em>Pan, zoom, search declarations</em><br/>
+<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_2d.html">
+  <img src="artifacts/visuals/generative_2d_preview.svg" alt="UMAP 2D preview" width="100%"/>
+</a><br/>
+<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_2d.html">generative_2d.html</a> (GitHub Pages)
+</td>
+<td align="center" width="50%">
+<strong>3D Proof Map</strong><br/>
+<em>Rotate, zoom, explore clusters</em><br/>
+<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_3d.html">
+  <img src="artifacts/visuals/generative_3d_preview_animated.svg" alt="UMAP 3D animated preview" width="100%"/>
+</a><br/>
+<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_3d.html">generative_3d.html</a> (GitHub Pages)
+</td>
+</tr>
+</table>
+
+### Layer Architecture
+
+<p align="center">
+<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_stack_overview.svg">
+  <img src="artifacts/visuals/generative_stack_overview.svg" alt="Generative Stack Overview" width="80%"/>
+</a>
+</p>
+
+### Import Graph
+
+<p align="center">
+<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/import_graph.svg">
+  <img src="artifacts/visuals/import_graph.svg" alt="Import Graph" width="100%"/>
+</a>
+</p>
+
+**UMAP note (interpretation + limitations):**
+- UMAP is a non-linear projection of high-dimensional feature vectors into 2D/3D; here the features are derived from Lean source text statistics and structural signals.
+- Only *local neighborhoods* are intended to be meaningful; global distances/cluster geometry are not proof-theoretic invariants.
+- Treat these maps as navigational aids; the formal guarantee is the Lean kernel check.
 
 ## Dependencies
 

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Stack - Lean 4 Formalization</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --accent: #e94560;
+            --accent-secondary: #0f3460;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0a0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; width: 100%; }
+        header { text-align: center; margin-bottom: 3rem; }
+        h1 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .badges {
+            margin: 1rem 0;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .badge-lean { background: #0984e3; }
+        .badge-verified { background: #00b894; }
+        .badge-sorry { background: #00b894; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.2);
+        }
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        .card a {
+            display: inline-block;
+            color: var(--text-primary);
+            background: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .card a:hover { background: #c73e54; }
+        .preview-img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--accent-secondary);
+        }
+        .layer-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+        .layer {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .layer-void { background: #2d3436; }
+        .layer-lof { background: #6c5ce7; }
+        .layer-eigen { background: #e17055; }
+        .layer-heyting { background: #e94560; }
+        .layer-surreal { background: #0984e3; }
+        .layer-comb { background: #fd79a8; }
+        .layer-types { background: #00b894; }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Generative Stack</h1>
+            <p class="subtitle">
+                Machine-checked proof that mathematical structure emerges generatively from the Void
+            </p>
+            <div class="badges">
+                <span class="badge badge-lean">Lean 4</span>
+                <span class="badge badge-sorry">0 sorry</span>
+                <span class="badge badge-verified">Verified</span>
+            </div>
+            <div class="layer-list">
+                <span class="layer layer-void">Void</span>
+                <span class="layer layer-lof">LoF</span>
+                <span class="layer layer-eigen">Eigenforms</span>
+                <span class="layer layer-heyting">Heyting</span>
+                <span class="layer layer-surreal">Surreals</span>
+                <span class="layer layer-comb">Combinators</span>
+                <span class="layer layer-types">Types</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3>2D Proof Map</h3>
+                <a href="artifacts/visuals/generative_2d.html">
+                    <img src="artifacts/visuals/generative_2d_preview.svg" alt="2D UMAP Preview" class="preview-img"/>
+                </a>
+                <p>Pan, zoom, and search through declarations. Color-coded by module family.</p>
+                <a href="artifacts/visuals/generative_2d.html">Open Interactive 2D</a>
+            </div>
+
+            <div class="card">
+                <h3>3D Proof Map</h3>
+                <a href="artifacts/visuals/generative_3d.html">
+                    <img src="artifacts/visuals/generative_3d_preview_animated.svg" alt="3D UMAP Preview" class="preview-img"/>
+                </a>
+                <p>Rotate, zoom, and explore proof clusters in three dimensions.</p>
+                <a href="artifacts/visuals/generative_3d.html">Open Interactive 3D</a>
+            </div>
+
+            <div class="card">
+                <h3>Layer Architecture</h3>
+                <a href="artifacts/visuals/generative_stack_overview.svg">
+                    <img src="artifacts/visuals/generative_stack_overview.svg" alt="Stack Overview" class="preview-img"/>
+                </a>
+                <p>The 7-layer hierarchy from Void to Types.</p>
+                <a href="artifacts/visuals/generative_stack_overview.svg">View Full Diagram</a>
+            </div>
+
+            <div class="card">
+                <h3>Import Graph</h3>
+                <a href="artifacts/visuals/import_graph.svg">
+                    <img src="artifacts/visuals/import_graph.svg" alt="Import Graph" class="preview-img"/>
+                </a>
+                <p>Module dependencies across the formalization.</p>
+                <a href="artifacts/visuals/import_graph.svg">View Import Graph</a>
+            </div>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h3>Source Code</h3>
+            <p>32 Lean files, ~3500 lines of verified proofs. Mathlib v4.24.0 + CombinatorialGames.</p>
+            <a href="https://github.com/Abraxas1010/generative-stack-lean">View on GitHub</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            Part of the <a href="https://apoth3osis.io">HeytingLean</a> formal verification project<br/>
+            &copy; 2022-2026 Equation Capital LLC. Dual licensed AGPL-3.0 / Commercial.
+        </p>
+    </footer>
+</body>
+</html>
