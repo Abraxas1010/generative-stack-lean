@@ -46,8 +46,8 @@ lake build --wfail
 ### Interactive Visualizations (GitHub Pages)
 
 - **Landing Page:** https://abraxas1010.github.io/generative-stack-lean/
-- **2D Proof Map:** https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_2d.html
-- **3D Proof Map:** https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_3d.html
+- **2D Proof Map:** https://abraxas1010.github.io/generative-stack-lean/umap_2d.html
+- **3D Proof Map:** https://abraxas1010.github.io/generative-stack-lean/umap_3d.html
 
 ## Key Theorems
 
@@ -102,18 +102,19 @@ Explore the proof structure in 2D and 3D:
 <td align="center" width="50%">
 <strong>2D Proof Map</strong><br/>
 <em>Pan, zoom, search declarations</em><br/>
-<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_2d.html">
+<a href="https://abraxas1010.github.io/generative-stack-lean/umap_2d.html">
   <img src="artifacts/visuals/generative_2d_preview.svg" alt="UMAP 2D preview" width="100%"/>
 </a><br/>
-<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_2d.html">generative_2d.html</a> (GitHub Pages)
+<a href="https://abraxas1010.github.io/generative-stack-lean/umap_2d.html">umap_2d.html</a> (GitHub Pages)
 </td>
 <td align="center" width="50%">
 <strong>3D Proof Map</strong><br/>
 <em>Rotate, zoom, explore clusters</em><br/>
-<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_3d.html">
-  <img src="artifacts/visuals/generative_3d_preview_animated.svg" alt="UMAP 3D animated preview" width="100%"/>
+<a href="https://abraxas1010.github.io/generative-stack-lean/umap_3d.html">
+  <!-- GitHub README rendering may disable SVG animation; use the static preview here. -->
+  <img src="artifacts/visuals/generative_3d_preview.svg" alt="UMAP 3D preview" width="100%"/>
 </a><br/>
-<a href="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_3d.html">generative_3d.html</a> (GitHub Pages)
+<a href="https://abraxas1010.github.io/generative-stack-lean/umap_3d.html">umap_3d.html</a> (GitHub Pages)
 </td>
 </tr>
 </table>

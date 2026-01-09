@@ -90,7 +90,8 @@
         // Create nodes
         const nodeGroup = new THREE.Group()
         const nodeMeshes = []
-        const nodeGeometry = new THREE.SphereGeometry(0.02, 16, 16)
+        // Slightly smaller nodes help edges remain visible in dense clusters.
+        const nodeGeometry = new THREE.SphereGeometry(0.015, 16, 16)
 
         for (let i = 0; i < items.length; i++) {
           const it = items[i]
@@ -106,17 +107,28 @@
 
         // Create edges
         const edgeGroup = new THREE.Group()
-        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xcfd8dc, opacity: 0.55, transparent: true, linewidth: 2 })
+        // `linewidth` is ignored on most platforms for `LineBasicMaterial`; keep edges bright and add
+        // a tiny bend so short kNN connections remain visible.
+        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xd7e3ea, opacity: 0.85, transparent: true })
 
         for (const [i, j] of edges) {
           const a = items[i]?.pos3
           const b = items[j]?.pos3
           if (!a || !b) continue
 
-          const points = [
-            new THREE.Vector3(a.x - 0.5, a.y - 0.5, a.z - 0.5),
-            new THREE.Vector3(b.x - 0.5, b.y - 0.5, b.z - 0.5)
-          ]
+          const p1 = new THREE.Vector3(a.x - 0.5, a.y - 0.5, a.z - 0.5)
+          const p2 = new THREE.Vector3(b.x - 0.5, b.y - 0.5, b.z - 0.5)
+          const mid = p1.clone().add(p2).multiplyScalar(0.5)
+          const dir = p2.clone().sub(p1)
+          const d = dir.length()
+          if (d > 1e-6) dir.normalize()
+          // Choose a stable "bend" direction (avoid near-parallel cross products).
+          const axis = Math.abs(dir.y) > 0.9 ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 1, 0)
+          const bendDir = dir.clone().cross(axis).normalize()
+          const bend = Math.min(0.06, 0.03 + 0.35 * d)
+          mid.add(bendDir.multiplyScalar(bend))
+
+          const points = [p1, mid, p2]
           const geometry = new THREE.BufferGeometry().setFromPoints(points)
           const line = new THREE.Line(geometry, edgeMaterial)
           edgeGroup.add(line)

@@ -166,16 +166,27 @@
 
           // edges
           if (showEdges.checked) {
-            ctx.lineWidth = 1.5
-            ctx.strokeStyle = 'rgba(207,216,220,0.55)'
+            // Curved edges are much more visible when kNN connections are very short in screen space.
+            ctx.lineWidth = 1.25
+            ctx.strokeStyle = 'rgba(207,216,220,0.78)'
             ctx.beginPath()
             const visSet = new Set(vis)
             for (const [i,j] of edges){
               if (!visSet.has(i) || !visSet.has(j)) continue
               const a = items[i].pos, b = items[j].pos
               if (!a || !b) continue
-              ctx.moveTo(toX(a.x), toY(a.y))
-              ctx.lineTo(toX(b.x), toY(b.y))
+              const x1 = toX(a.x), y1 = toY(a.y)
+              const x2 = toX(b.x), y2 = toY(b.y)
+              const dx = x2 - x1, dy = y2 - y1
+              const d = Math.hypot(dx, dy)
+              // Use a small normal offset so edges don't hide entirely under nodes.
+              const nx = d > 1e-6 ? (-dy / d) : 0
+              const ny = d > 1e-6 ? (dx / d) : 0
+              const bend = Math.max(6, Math.min(14, 0.25 * d + 6))
+              const cx = (x1 + x2) / 2 + nx * bend
+              const cy = (y1 + y2) / 2 + ny * bend
+              ctx.moveTo(x1, y1)
+              ctx.quadraticCurveTo(cx, cy, x2, y2)
             }
             ctx.stroke()
           }
@@ -186,7 +197,7 @@
             const p = it.pos
             if (!p) continue
             const x = toX(p.x), y = toY(p.y)
-            const base = 4.0
+            const base = 3.2
             const r = (i === selected ? base*1.9 : i === hover ? base*1.5 : base)
             ctx.beginPath()
             ctx.fillStyle = colorForFamily(it.family || '')
