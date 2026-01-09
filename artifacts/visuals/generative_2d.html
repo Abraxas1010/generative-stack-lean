@@ -166,33 +166,7 @@
           ctx.clearRect(0,0,canvas.width,canvas.height)
           ctx.fillStyle = '#0b0f14'
           ctx.fillRect(0,0,canvas.width,canvas.height)
-
-          // edges
-          if (showEdges.checked) {
-            // Curved edges are much more visible when kNN connections are very short in screen space.
-            ctx.lineWidth = 2.25
-            ctx.strokeStyle = 'rgba(240,248,255,0.92)'
-            ctx.beginPath()
-            const visSet = new Set(vis)
-            for (const [i,j] of edges){
-              if (!visSet.has(i) || !visSet.has(j)) continue
-              const a = items[i].pos, b = items[j].pos
-              if (!a || !b) continue
-              const x1 = toX(a.x), y1 = toY(a.y)
-              const x2 = toX(b.x), y2 = toY(b.y)
-              const dx = x2 - x1, dy = y2 - y1
-              const d = Math.hypot(dx, dy)
-              // Use a small normal offset so edges don't hide entirely under nodes.
-              const nx = d > 1e-6 ? (-dy / d) : 0
-              const ny = d > 1e-6 ? (dx / d) : 0
-              const bend = Math.max(6, Math.min(14, 0.25 * d + 6))
-              const cx = (x1 + x2) / 2 + nx * bend
-              const cy = (y1 + y2) / 2 + ny * bend
-              ctx.moveTo(x1, y1)
-              ctx.quadraticCurveTo(cx, cy, x2, y2)
-            }
-            ctx.stroke()
-          }
+          ctx.globalAlpha = 1
 
           // nodes
           for (const i of vis){
@@ -215,6 +189,36 @@
             }
           }
           ctx.globalAlpha = 1
+
+          // edges (draw *after* nodes so they can't be completely hidden under dense clusters)
+          if (showEdges.checked) {
+            // Curved edges are much more visible when kNN connections are very short in screen space.
+            ctx.save()
+            ctx.globalCompositeOperation = 'lighter'
+            ctx.lineWidth = 2.6
+            ctx.strokeStyle = 'rgba(240,248,255,0.92)'
+            ctx.beginPath()
+            const visSet = new Set(vis)
+            for (const [i,j] of edges){
+              if (!visSet.has(i) || !visSet.has(j)) continue
+              const a = items[i].pos, b = items[j].pos
+              if (!a || !b) continue
+              const x1 = toX(a.x), y1 = toY(a.y)
+              const x2 = toX(b.x), y2 = toY(b.y)
+              const dx = x2 - x1, dy = y2 - y1
+              const d = Math.hypot(dx, dy)
+              // Use a small normal offset so edges don't hide entirely under nodes.
+              const nx = d > 1e-6 ? (-dy / d) : 0
+              const ny = d > 1e-6 ? (dx / d) : 0
+              const bend = Math.max(8, Math.min(20, 0.35 * d + 8))
+              const cx = (x1 + x2) / 2 + nx * bend
+              const cy = (y1 + y2) / 2 + ny * bend
+              ctx.moveTo(x1, y1)
+              ctx.quadraticCurveTo(cx, cy, x2, y2)
+            }
+            ctx.stroke()
+            ctx.restore()
+          }
         }
 
         canvas.addEventListener('mousedown', (ev) => {
