@@ -106,7 +106,7 @@
 
         // Create edges
         const edgeGroup = new THREE.Group()
-        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xcfd8dc, opacity: 0.25, transparent: true })
+        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xcfd8dc, opacity: 0.55, transparent: true, linewidth: 2 })
 
         for (const [i, j] of edges) {
           const a = items[i]?.pos3
