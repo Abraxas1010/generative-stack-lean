@@ -113,12 +113,32 @@
           const pad = 0.10
           const w = Math.max(0.02, (maxX-minX)*(1+pad))
           const h = Math.max(0.02, (maxY-minY)*(1+pad))
-          view.s = Math.max(0.3, Math.min(10, Math.min(1/w, 1/h)))
+          const baseScale = Math.max(0.3, Math.min(25, Math.min(1/w, 1/h)))
+          const innerW = canvas.width - 2*margin
+          const innerH = canvas.height - 2*margin
+
+          // The embedding spans [0,1] but the kNN edges are very short in embedding space.
+          // So a "bounding box" fit makes edges nearly invisible. We boost zoom so the median
+          // edge length is a readable number of pixels.
+          const visSet = new Set(vis)
+          const lens = []
+          for (const [i, j] of edges) {
+            if (!visSet.has(i) || !visSet.has(j)) continue
+            const a = items[i]?.pos, b = items[j]?.pos
+            if (!a || !b) continue
+            lens.push(Math.hypot(a.x - b.x, a.y - b.y))
+          }
+          lens.sort((a,b) => a-b)
+          const med = lens.length ? lens[Math.floor(lens.length/2)] : null
+          const targetPx = 44
+          const boosted = (med && med > 1e-9)
+            ? Math.max(baseScale, targetPx / (med * Math.min(innerW, innerH)))
+            : baseScale
+
+          view.s = Math.max(0.3, Math.min(25, boosted))
           const cx=(minX+maxX)/2, cy=(minY+maxY)/2
           const targetX = canvas.width/2
           const targetY = canvas.height/2
-          const innerW = canvas.width - 2*margin
-          const innerH = canvas.height - 2*margin
           view.ox = targetX - (margin + cx * innerW * view.s)
           view.oy = targetY - (margin + (1-cy) * innerH * view.s)
           render()
