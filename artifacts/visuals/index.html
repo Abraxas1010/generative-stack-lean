@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Stack - Visualizations</title>
+    <style>
+        :root { color-scheme: dark; }
+        body {
+            margin: 0;
+            padding: 2rem;
+            background: #0b0f14;
+            color: #e6eef7;
+            font-family: ui-sans-serif, system-ui, sans-serif;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #e94560; margin-bottom: 0.5rem; }
+        .subtitle { color: #b8c7d9; margin-bottom: 2rem; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: #16213e;
+            border: 1px solid #1c2a3a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-4px); }
+        .card h3 { color: #e94560; margin: 0 0 0.75rem; }
+        .card p { color: #b8c7d9; margin: 0 0 1rem; font-size: 0.9rem; }
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #24364a;
+            margin-bottom: 1rem;
+        }
+        .card a {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .card a:hover { background: #c73e54; }
+        .back { color: #8ab4f8; text-decoration: none; display: inline-block; margin-bottom: 1rem; }
+        .back:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html" class="back">&larr; Back to main</a>
+        <h1>Generative Stack Visualizations</h1>
+        <p class="subtitle">Interactive proof maps and diagrams</p>
+
+        <div class="grid">
+            <div class="card">
+                <h3>2D Proof Map</h3>
+                <a href="./generative_2d.html">
+                    <img src="./generative_2d_preview.svg" alt="2D Proof Map Preview"/>
+                </a>
+                <p>Pan, zoom, and search through 215 declarations. Color-coded by module family with kNN edges showing proof similarity.</p>
+                <a href="./generative_2d.html">Open Interactive 2D</a>
+            </div>
+
+            <div class="card">
+                <h3>3D Proof Map</h3>
+                <a href="./generative_3d.html">
+                    <img src="./generative_3d_preview_animated.svg" alt="3D Proof Map Preview"/>
+                </a>
+                <p>Rotate, zoom, and explore proof clusters in three dimensions with WebGL rendering.</p>
+                <a href="./generative_3d.html">Open Interactive 3D</a>
+            </div>
+
+            <div class="card">
+                <h3>Layer Architecture</h3>
+                <a href="./generative_stack_overview.svg">
+                    <img src="./generative_stack_overview.svg" alt="Layer Architecture"/>
+                </a>
+                <p>The 7-layer generative hierarchy from Void to Types.</p>
+                <a href="./generative_stack_overview.svg">View Full Diagram</a>
+            </div>
+
+            <div class="card">
+                <h3>Import Graph</h3>
+                <a href="./import_graph.svg">
+                    <img src="./import_graph.svg" alt="Import Graph"/>
+                </a>
+                <p>Module dependencies across the formalization.</p>
+                <a href="./import_graph.svg">View Import Graph</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
