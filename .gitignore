@@ -1,0 +1,20 @@
+# Lake build artifacts
+.lake/
+lake-packages/
+build/
+.elan/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc

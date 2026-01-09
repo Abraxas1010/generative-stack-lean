@@ -1,0 +1,147 @@
+# Generative Stack - Verified Lean 4 Formalization
+
+<p align="center">
+  <strong>Machine-checked proof that mathematical structure emerges generatively from the Void</strong><br/>
+  <em>
+    Lean 4 formalization of the 7-layer hierarchy: Void → LoF → Eigenforms → Heyting → Surreals → Combinators → Types
+  </em>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Lean-4-blue" alt="Lean 4"/>
+  <img src="https://img.shields.io/badge/sorry-0-brightgreen" alt="No sorry"/>
+  <img src="https://img.shields.io/badge/status-verified-success" alt="Verified"/>
+</p>
+
+---
+
+Part of the broader HeytingLean formal verification project: https://apoth3osis.io
+
+## Overview
+
+This repository contains a **standalone, verifiable** Lean 4 formalization of the Generative Stack - a 7-layer mathematical hierarchy proving that:
+
+1. **Numbers arise** from pure distinction (Laws of Form)
+2. **Fixed points exist** (Lawvere's theorem, type-theoretic and categorical)
+3. **Games encode arithmetic** (Surreal number bridge)
+4. **Logic structures emerge** (Heyting algebras from nuclei)
+5. **Dimensional ratchets** constrain modality (1D→2D→3D)
+
+## Quick Start
+
+```bash
+# 1. Ensure you have Lean 4 (elan recommended)
+curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
+
+# 2. Clone and build
+git clone <this-repo>
+cd GenerativeStack
+lake update
+lake build --wfail
+
+# 3. Verify with our script
+./scripts/verify_generative_stack.sh
+```
+
+## Key Theorems
+
+| Theorem | Location | Significance |
+|---------|----------|--------------|
+| `LawvereFixedPoint.lawvere_fixed_point` | `LoF/Bauer/LawvereFixedPoint.lean` | Type-theoretic Lawvere |
+| `ccc_lawvere_fixed_point` | `LoF/Bauer/LawvereCategorical.lean` | CCC categorical form |
+| `toIGame_addConway` | `Numbers/Surreal/BridgeToPGamePreservation.lean` | Addition preservation |
+| `toIGame_negConway` | `Numbers/Surreal/BridgeToPGamePreservation.lean` | Negation preservation |
+| `denote_steps` | `LoF/Combinators/Denotational.lean` | SKY combinator soundness |
+| `reentry_fixed_eq` | `LoF/Nucleus.lean` | Fixed point identity |
+| `omega_is_heyting` | `LoF/HeytingCore.lean` | Heyting from nucleus |
+
+## Directory Structure
+
+```
+HeytingLean/
+├── LoF/                    # Laws of Form layer
+│   ├── Nucleus.lean        # Re-entry nuclei
+│   ├── HeytingCore.lean    # Heyting algebra emergence
+│   ├── BoundaryHeyting.lean
+│   ├── Bauer/              # Eigenforms & Lawvere
+│   │   ├── LawvereFixedPoint.lean
+│   │   ├── LawvereCategorical.lean
+│   │   ├── Eigenforms.lean
+│   │   └── ...
+│   └── Combinators/        # SKY calculus
+│       ├── SKY.lean
+│       └── Denotational.lean
+├── Numbers/                # Surreal numbers
+│   ├── SurrealCore.lean
+│   └── Surreal/
+│       ├── BridgeToPGame.lean
+│       ├── BridgeToPGamePreservation.lean
+│       └── LoFDerivation.lean
+├── Topos/                  # Dimensional ratchet
+│   ├── DimensionalRatchet.lean
+│   └── DimensionalRatchetTranslate.lean
+├── Quantum/                # OML layer
+│   ├── OML/Core.lean
+│   └── Translate/
+└── Tests/
+    └── UnifiedMathSanity.lean
+```
+
+## Visualizations
+
+See `artifacts/visuals/` for:
+- `generative_2d.html` - Interactive 2D UMAP proof map
+- `generative_3d.html` - Interactive 3D UMAP proof map
+- `import_graph.svg` - Module dependency graph
+- `generative_stack_overview.svg` - Layer architecture
+
+## Dependencies
+
+- **Lean 4**: `leanprover/lean4:v4.16.0`
+- **Mathlib**: `v4.24.0`
+- **CombinatorialGames**: For PGame/Surreal bridge
+
+## Verification
+
+Run the full verification:
+
+```bash
+./scripts/verify_generative_stack.sh
+```
+
+This checks:
+1. No `sorry` or `admit` in source
+2. Clean `lake build --wfail`
+3. Hash verification of key files
+
+## License
+
+**Copyright (c) 2022-2026 Equation Capital LLC. All rights reserved.**
+
+This software is available under a **dual licensing model**:
+- **AGPL-3.0** for open source, academic, and personal use
+- **Commercial License** available for proprietary use
+
+See [LICENSE.md](LICENSE.md) for details. Contact: rgoodman@apoth3osis.io
+
+## Citation
+
+If you use this formalization in your research, please cite:
+
+```bibtex
+@software{generative_stack_lean,
+  title = {Generative Stack: A Lean 4 Formalization},
+  year = {2025},
+  note = {Mechanized proof that mathematical structure emerges from the Void}
+}
+```
+
+## Contact
+
+For questions or issues, please open a GitHub issue or contact rgoodman@apoth3osis.io
+
+---
+
+<p align="center">
+  <em>Part of the <a href="https://apoth3osis.io">HeytingLean</a> formal verification project</em>
+</p>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1080" width="1000" height="1080">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#60a5fa"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="1080" fill="#1a1a2e"/>
+  <text x="500.0" y="25" text-anchor="middle" fill="#e94560" font-family="Arial" font-size="14" font-weight="bold">Generative Stack - Import Graph</text>
+  <line x1="160" y1="855" x2="100" y2="540" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="960" x2="100" y2="575" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="715" x2="100" y2="540" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="715" x2="100" y2="400" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="995" x2="100" y2="575" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="995" x2="100" y2="540" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="995" x2="100" y2="400" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="750" x2="100" y2="365" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="750" x2="100" y2="190" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="820" x2="100" y2="435" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="785" x2="100" y2="365" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="785" x2="100" y2="190" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="680" x2="100" y2="50" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="680" x2="100" y2="540" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="645" x2="100" y2="225" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="890" x2="100" y2="470" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="925" x2="100" y2="505" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="580" y1="155" x2="520" y2="50" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="580" y1="155" x2="660" y2="190" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="580" y1="120" x2="660" y2="85" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="580" y1="120" x2="100" y2="85" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="100" y2="190" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="100" y2="260" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="100" y2="155" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="100" y2="120" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="100" y2="295" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="380" y2="85" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="380" y2="120" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="380" y2="50" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="100" y2="610" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="100" y2="330" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="520" y2="50" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="860" y1="50" x2="520" y2="85" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="440" y1="225" x2="380" y2="155" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="440" y1="260" x2="380" y2="85" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="440" y1="190" x2="380" y2="155" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="1030" x2="100" y2="505" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="160" y1="1030" x2="380" y2="155" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="225" x2="660" y2="50" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="225" x2="660" y2="155" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="260" x2="660" y2="50" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="260" x2="660" y2="85" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="260" x2="660" y2="155" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="295" x2="660" y2="155" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="295" x2="660" y2="120" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="720" y1="295" x2="660" y2="85" stroke="#3b4252" stroke-width="1" marker-end="url(#arrow)"/>
+  <rect x="100" y="40" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="54" text-anchor="middle" fill="white" font-family="Arial" font-size="9">DomainTheory</text>
+  <rect x="100" y="75" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="89" text-anchor="middle" fill="white" font-family="Arial" font-size="9">DoubleNegation</text>
+  <rect x="100" y="110" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="124" text-anchor="middle" fill="white" font-family="Arial" font-size="9">LawvereCategori</text>
+  <rect x="100" y="145" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="159" text-anchor="middle" fill="white" font-family="Arial" font-size="9">LawvereFixedPoi</text>
+  <rect x="100" y="180" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="194" text-anchor="middle" fill="white" font-family="Arial" font-size="9">ScottReflexiveD</text>
+  <rect x="100" y="215" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="229" text-anchor="middle" fill="white" font-family="Arial" font-size="9">SyntheticComput</text>
+  <rect x="100" y="250" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="264" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BoundaryHeyting</text>
+  <rect x="100" y="285" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="299" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Denotational</text>
+  <rect x="100" y="320" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="334" text-anchor="middle" fill="white" font-family="Arial" font-size="9">EigenformBridge</text>
+  <rect x="100" y="355" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="369" text-anchor="middle" fill="white" font-family="Arial" font-size="9">SKY</text>
+  <rect x="100" y="390" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="404" text-anchor="middle" fill="white" font-family="Arial" font-size="9">HeytingCore</text>
+  <rect x="100" y="425" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="439" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Identity</text>
+  <rect x="100" y="460" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="474" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Rewrite</text>
+  <rect x="100" y="495" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="509" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Syntax</text>
+  <rect x="100" y="530" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="544" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Nucleus</text>
+  <rect x="100" y="565" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="579" text-anchor="middle" fill="white" font-family="Arial" font-size="9">PrimaryAlgebra</text>
+  <rect x="380" y="40" width="120" height="20" rx="4" fill="#0984e3" opacity="0.8"/>
+  <text x="440" y="54" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BridgeToFGame</text>
+  <rect x="380" y="75" width="120" height="20" rx="4" fill="#0984e3" opacity="0.8"/>
+  <text x="440" y="89" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BridgeToPGame</text>
+  <rect x="380" y="110" width="120" height="20" rx="4" fill="#0984e3" opacity="0.8"/>
+  <text x="440" y="124" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BridgeToPGamePr</text>
+  <rect x="100" y="600" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="614" text-anchor="middle" fill="white" font-family="Arial" font-size="9">LoFDerivation</text>
+  <rect x="380" y="145" width="120" height="20" rx="4" fill="#0984e3" opacity="0.8"/>
+  <text x="440" y="159" text-anchor="middle" fill="white" font-family="Arial" font-size="9">SurrealCore</text>
+  <rect x="660" y="40" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="54" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Core</text>
+  <rect x="660" y="75" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="89" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Sasaki</text>
+  <rect x="660" y="110" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="124" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Core</text>
+  <rect x="660" y="145" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="159" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Modality</text>
+  <rect x="660" y="180" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="194" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Omega</text>
+  <rect x="520" y="40" width="120" height="20" rx="4" fill="#00b894" opacity="0.8"/>
+  <text x="580" y="54" text-anchor="middle" fill="white" font-family="Arial" font-size="9">DimensionalRatc</text>
+  <rect x="520" y="75" width="120" height="20" rx="4" fill="#00b894" opacity="0.8"/>
+  <text x="580" y="89" text-anchor="middle" fill="white" font-family="Arial" font-size="9">DimensionalRatc</text>
+  <rect x="100" y="635" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="649" text-anchor="middle" fill="white" font-family="Arial" font-size="9">DomainTheory</text>
+  <rect x="100" y="670" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="684" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Eigenforms</text>
+  <rect x="100" y="705" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="719" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BoundaryHeyting</text>
+  <rect x="100" y="740" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="754" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Denotational</text>
+  <rect x="100" y="775" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="789" text-anchor="middle" fill="white" font-family="Arial" font-size="9">EigenformBridge</text>
+  <rect x="100" y="810" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="824" text-anchor="middle" fill="white" font-family="Arial" font-size="9">SKY</text>
+  <rect x="100" y="845" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="859" text-anchor="middle" fill="white" font-family="Arial" font-size="9">HeytingCore</text>
+  <rect x="100" y="880" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="894" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Normalization</text>
+  <rect x="100" y="915" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="929" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Rewrite</text>
+  <rect x="100" y="950" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="964" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Nucleus</text>
+  <rect x="100" y="985" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="999" text-anchor="middle" fill="white" font-family="Arial" font-size="9">OmegaCategory</text>
+  <rect x="380" y="180" width="120" height="20" rx="4" fill="#0984e3" opacity="0.8"/>
+  <text x="440" y="194" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BridgeToFGame</text>
+  <rect x="380" y="215" width="120" height="20" rx="4" fill="#0984e3" opacity="0.8"/>
+  <text x="440" y="229" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BridgeToPGame</text>
+  <rect x="380" y="250" width="120" height="20" rx="4" fill="#0984e3" opacity="0.8"/>
+  <text x="440" y="264" text-anchor="middle" fill="white" font-family="Arial" font-size="9">BridgeToPGamePr</text>
+  <rect x="100" y="1020" width="120" height="20" rx="4" fill="#6c5ce7" opacity="0.8"/>
+  <text x="160" y="1034" text-anchor="middle" fill="white" font-family="Arial" font-size="9">LoFDerivation</text>
+  <rect x="660" y="215" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="229" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Sasaki</text>
+  <rect x="660" y="250" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="264" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Core</text>
+  <rect x="660" y="285" width="120" height="20" rx="4" fill="#fd79a8" opacity="0.8"/>
+  <text x="720" y="299" text-anchor="middle" fill="white" font-family="Arial" font-size="9">Omega</text>
+  <rect x="800" y="40" width="120" height="20" rx="4" fill="#636e72" opacity="0.8"/>
+  <text x="860" y="54" text-anchor="middle" fill="white" font-family="Arial" font-size="9">UnifiedMathSani</text>
+  <rect x="520" y="110" width="120" height="20" rx="4" fill="#00b894" opacity="0.8"/>
+  <text x="580" y="124" text-anchor="middle" fill="white" font-family="Arial" font-size="9">DimensionalRatc</text>
+  <rect x="520" y="145" width="120" height="20" rx="4" fill="#00b894" opacity="0.8"/>
+  <text x="580" y="159" text-anchor="middle" fill="white" font-family="Arial" font-size="9">DimensionalRatc</text>
+  <text x="160" y="1070" text-anchor="middle" fill="#636e72" font-family="Arial" font-size="10">LoF</text>
+  <text x="300" y="1070" text-anchor="middle" fill="#636e72" font-family="Arial" font-size="10">Bauer</text>
+  <text x="440" y="1070" text-anchor="middle" fill="#636e72" font-family="Arial" font-size="10">Numbers</text>
+  <text x="580" y="1070" text-anchor="middle" fill="#636e72" font-family="Arial" font-size="10">Topos</text>
+  <text x="720" y="1070" text-anchor="middle" fill="#636e72" font-family="Arial" font-size="10">Quantum</text>
+  <text x="860" y="1070" text-anchor="middle" fill="#636e72" font-family="Arial" font-size="10">Tests</text>
+</svg>

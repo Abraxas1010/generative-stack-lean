@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="layer0" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2d3436"/>
+      <stop offset="100%" style="stop-color:#636e72"/>
+    </linearGradient>
+    <linearGradient id="layer1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6c5ce7"/>
+      <stop offset="100%" style="stop-color:#a29bfe"/>
+    </linearGradient>
+    <linearGradient id="layer2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e17055"/>
+      <stop offset="100%" style="stop-color:#fab1a0"/>
+    </linearGradient>
+    <linearGradient id="layer3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00b894"/>
+      <stop offset="100%" style="stop-color:#55efc4"/>
+    </linearGradient>
+    <linearGradient id="layer4" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0984e3"/>
+      <stop offset="100%" style="stop-color:#74b9ff"/>
+    </linearGradient>
+    <linearGradient id="layer5" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fd79a8"/>
+      <stop offset="100%" style="stop-color:#fdcb6e"/>
+    </linearGradient>
+    <linearGradient id="layer6" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e94560"/>
+      <stop offset="100%" style="stop-color:#ff6b6b"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="700" fill="url(#bg-gradient)"/>
+
+  <!-- Title -->
+  <text x="450" y="45" text-anchor="middle" fill="#e94560" font-family="Arial, sans-serif" font-size="28" font-weight="bold">
+    The Generative Stack
+  </text>
+  <text x="450" y="70" text-anchor="middle" fill="#a0a0a0" font-family="Arial, sans-serif" font-size="14">
+    Machine-Checked Derivation from Void to Type Theory
+  </text>
+
+  <!-- Layer 6: Type Theory -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="95" width="400" height="70" rx="10" fill="url(#layer6)"/>
+    <text x="120" y="125" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">6. Type Theory</text>
+    <text x="120" y="148" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11">Lawvere (CCC) + Categorical Diagonal</text>
+  </g>
+  <g transform="translate(520, 95)">
+    <rect width="280" height="70" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="15" y="25" fill="#a0a0a0" font-family="monospace" font-size="10">LawvereCategorical.lean</text>
+    <text x="15" y="42" fill="#60a5fa" font-family="monospace" font-size="9">exists_fixedPoint_of_weaklyPointSurjective</text>
+    <text x="15" y="57" fill="#60a5fa" font-family="monospace" font-size="9">omlToHeyting_ofTranslate</text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M300 170 L300 185" stroke="#e94560" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <polygon points="295,180 300,190 305,180" fill="#e94560"/>
+
+  <!-- Layer 5: Combinators -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="190" width="400" height="70" rx="10" fill="url(#layer5)"/>
+    <text x="120" y="220" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">5. Combinators</text>
+    <text x="120" y="243" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11">SKY Denotational Semantics + Soundness</text>
+  </g>
+  <g transform="translate(520, 190)">
+    <rect width="280" height="70" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="15" y="25" fill="#a0a0a0" font-family="monospace" font-size="10">Denotational.lean, SKY.lean</text>
+    <text x="15" y="42" fill="#60a5fa" font-family="monospace" font-size="9">SKYModel.denote_steps</text>
+    <text x="15" y="57" fill="#60a5fa" font-family="monospace" font-size="9">ScottSKYModel.denote_steps_sound</text>
+  </g>
+
+  <!-- Arrow -->
+  <polygon points="295,275 300,285 305,275" fill="#fd79a8"/>
+
+  <!-- Layer 4: Surreals -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="285" width="400" height="70" rx="10" fill="url(#layer4)"/>
+    <text x="120" y="315" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">4. Surreal Numbers</text>
+    <text x="120" y="338" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11">{L|R} → CGT (IGame/FGame) + Preservation</text>
+  </g>
+  <g transform="translate(520, 285)">
+    <rect width="280" height="70" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="15" y="25" fill="#a0a0a0" font-family="monospace" font-size="10">BridgeToPGamePreservation.lean</text>
+    <text x="15" y="42" fill="#60a5fa" font-family="monospace" font-size="9">toIGame_addConway, toIGame_negConway</text>
+    <text x="15" y="57" fill="#60a5fa" font-family="monospace" font-size="9">distinction_pregame_equiv</text>
+  </g>
+
+  <!-- Arrow -->
+  <polygon points="295,370 300,380 305,370" fill="#0984e3"/>
+
+  <!-- Layer 3: Heyting -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="380" width="400" height="70" rx="10" fill="url(#layer3)"/>
+    <text x="120" y="410" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">3. Heyting Algebras</text>
+    <text x="120" y="433" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11">Boundary → Logic + Dimensional Ratchet</text>
+  </g>
+  <g transform="translate(520, 380)">
+    <rect width="280" height="70" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="15" y="25" fill="#a0a0a0" font-family="monospace" font-size="10">DimensionalRatchet.lean, Sasaki.lean</text>
+    <text x="15" y="42" fill="#60a5fa" font-family="monospace" font-size="9">Sasaki.proj_idempotent</text>
+    <text x="15" y="57" fill="#60a5fa" font-family="monospace" font-size="9">classicalCoreBoolean</text>
+  </g>
+
+  <!-- Arrow -->
+  <polygon points="295,465 300,475 305,465" fill="#00b894"/>
+
+  <!-- Layer 2: Eigenforms -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="475" width="400" height="70" rx="10" fill="url(#layer2)"/>
+    <text x="120" y="505" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">2. Eigenforms</text>
+    <text x="120" y="528" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11">Fixed Points: Y, Gremlin, Scott, Lawvere</text>
+  </g>
+  <g transform="translate(520, 475)">
+    <rect width="280" height="70" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="15" y="25" fill="#a0a0a0" font-family="monospace" font-size="10">EigenformBridge.lean, Scott*.lean</text>
+    <text x="15" y="42" fill="#60a5fa" font-family="monospace" font-size="9">Y_eigenform, gremlin_fixedpoint</text>
+    <text x="15" y="57" fill="#60a5fa" font-family="monospace" font-size="9">scottFix_isFixed</text>
+  </g>
+
+  <!-- Arrow -->
+  <polygon points="295,560 300,570 305,560" fill="#e17055"/>
+
+  <!-- Layer 1: LoF -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="570" width="400" height="70" rx="10" fill="url(#layer1)"/>
+    <text x="120" y="600" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">1. Laws of Form</text>
+    <text x="120" y="623" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11">Distinction Calculus + Nucleus/Closure</text>
+  </g>
+  <g transform="translate(520, 570)">
+    <rect width="280" height="70" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="15" y="25" fill="#a0a0a0" font-family="monospace" font-size="10">LoFPrimary/*, Nucleus.lean</text>
+    <text x="15" y="42" fill="#60a5fa" font-family="monospace" font-size="9">mark, void, juxt</text>
+    <text x="15" y="57" fill="#60a5fa" font-family="monospace" font-size="9">Order.Nucleus, Omega fixed points</text>
+  </g>
+
+  <!-- Arrow -->
+  <polygon points="295,655 300,665 305,655" fill="#6c5ce7"/>
+
+  <!-- Layer 0: Void -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="665" width="200" height="30" rx="8" fill="url(#layer0)"/>
+    <text x="300" y="686" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">0. VOID</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(820, 95)">
+    <text x="0" y="0" fill="#a0a0a0" font-family="Arial, sans-serif" font-size="10">LEGEND</text>
+    <rect x="0" y="10" width="12" height="12" rx="2" fill="#4ade80"/>
+    <text x="18" y="20" fill="#a0a0a0" font-family="Arial, sans-serif" font-size="9">Verified</text>
+  </g>
+</svg>

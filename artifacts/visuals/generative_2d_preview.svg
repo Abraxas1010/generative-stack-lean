@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#1a1a2e"/>
+  <text x="200" y="30" text-anchor="middle" fill="#e94560" font-family="Arial" font-size="16" font-weight="bold">2D Proof Map</text>
+  <circle cx="100" cy="120" r="8" fill="#6c5ce7"/><text x="115" y="125" fill="#a0a0a0" font-size="8">LoF</text>
+  <circle cx="180" cy="100" r="8" fill="#e17055"/><text x="195" y="105" fill="#a0a0a0" font-size="8">Eigenform</text>
+  <circle cx="260" cy="140" r="8" fill="#0984e3"/><text x="275" y="145" fill="#a0a0a0" font-size="8">Surreal</text>
+  <circle cx="140" cy="180" r="8" fill="#fd79a8"/><text x="155" y="185" fill="#a0a0a0" font-size="8">Combinator</text>
+  <circle cx="220" cy="200" r="8" fill="#00b894"/><text x="235" y="205" fill="#a0a0a0" font-size="8">Ratchet</text>
+  <circle cx="300" cy="180" r="8" fill="#e94560"/><text x="315" y="185" fill="#a0a0a0" font-size="8">Lawvere</text>
+  <text x="200" y="280" text-anchor="middle" fill="#60a5fa" font-family="Arial" font-size="10">Click to open interactive view</text>
+</svg>
