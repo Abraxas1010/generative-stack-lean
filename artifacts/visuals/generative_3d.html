@@ -9,297 +9,243 @@
       body { margin: 0; overflow: hidden; background:#0b0f14; color:#e6eef7; font: 13px/1.35 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }
       #ui { position: fixed; top: 12px; left: 12px; right: 12px; display:flex; gap: 10px; align-items: center; z-index: 10; }
       .panel { background: rgba(15,23,33,0.92); border: 1px solid #1c2a3a; border-radius: 10px; padding: 10px 12px; backdrop-filter: blur(6px); }
-      input[type="text"]{ width: 360px; max-width: 60vw; background:#0b1320; color:#e6eef7; border:1px solid #24364a; border-radius: 8px; padding: 7px 10px; outline:none; }
-      label { user-select:none; }
-      button { background:#132033; color:#e6eef7; border:1px solid #24364a; border-radius: 8px; padding: 7px 10px; cursor:pointer; }
-      button:hover { background:#182a42; }
+      .muted { color:#b8c7d9; }
       #tip { position: fixed; pointer-events:none; z-index: 20; padding: 6px 8px; border-radius: 8px; background: rgba(0,0,0,0.75); border:1px solid rgba(255,255,255,0.10); display:none; max-width: 56vw; }
       #details { position: fixed; right: 12px; bottom: 12px; width: min(520px, calc(100vw - 24px)); max-height: 45vh; overflow:auto; white-space: pre-wrap; }
       #details h3 { margin: 0 0 8px; font-size: 14px; }
-      .muted { color:#b8c7d9; }
-      .row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
       a { color:#8ab4f8; text-decoration:none; }
       a:hover{ text-decoration:underline; }
       code { background:#0b1320; border:1px solid #24364a; border-radius: 6px; padding:1px 6px; }
-      svg { display:block; width: 100vw; height: 100vh; }
-      .edge { stroke: rgba(245, 248, 252, 0.50); stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-      .node { stroke: rgba(255,255,255,0.10); stroke-width: 1.0; vector-effect: non-scaling-stroke; }
-      .node.hit { stroke: rgba(255,255,255,0.85); stroke-width: 1.7; }
     </style>
   </head>
   <body>
-    <div id="ui" class="row">
-      <div class="panel row">
-        <a href="../../index.html">&larr; index</a>
-        <input id="q" type="text" placeholder="Search declarations (substring)..." />
-        <label><input id="showEdges" type="checkbox" checked /> edges</label>
-        <span id="edgeCount" class="muted"></span>
-        <button id="reset">Reset View</button>
-      </div>
-      <div class="panel muted">Rotate: drag · Zoom: wheel · Select: click</div>
+    <div id="ui" class="panel">
+      <a href="./index.html">&larr; index</a>
+      <span style="margin-left:10px" class="muted">Drag: rotate &middot; Wheel: zoom &middot; Shift+drag/right-drag: pan &middot; Hover/click: details</span>
     </div>
     <div id="tip"></div>
     <div id="details" class="panel" style="display:none"></div>
 
-    <svg id="svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" role="img" aria-label="3D proof map (projected)">
-      <g id="edges"></g>
-      <g id="nodes"></g>
-    </svg>
-
+    <script src="./vendor/three.min.js"></script>
     <script src="./generative_proofs_data.js"></script>
     <script>
       ;(() => {
+        const params = new URLSearchParams(window.location.search)
+        const EMBED = params.get('embed') === '1'
+        if (EMBED) {
+          const ui = document.getElementById('ui')
+          if (ui) ui.style.display = 'none'
+        }
+
         const data = window.GENERATIVE_PROOFS || { items: [], edges: [] }
         const items = data.items || []
         const edges = data.edges || []
 
-        const svg = document.getElementById('svg')
-        const edgesG = document.getElementById('edges')
-        const nodesG = document.getElementById('nodes')
-
         const tip = document.getElementById('tip')
         const details = document.getElementById('details')
-        const q = document.getElementById('q')
-        const showEdges = document.getElementById('showEdges')
-        const edgeCount = document.getElementById('edgeCount')
-        const resetBtn = document.getElementById('reset')
-
-        edgeCount.textContent = `(${edges.length} edges)`
-
-        const W = 1000
-        const H = 700
+        if (EMBED) {
+          if (tip) tip.style.display = 'none'
+          if (details) details.style.display = 'none'
+        }
 
         const colorForFamily = (fam) => {
           const map = {
-            'LoF':'#6c5ce7',
-            'Eigenform':'#e17055',
-            'Lawvere':'#e94560',
-            'Surreal':'#0984e3',
-            'Combinator':'#fd79a8',
-            'Ratchet':'#00b894',
-            'Quantum':'#9b59b6',
-            'HoTT':'#f39c12',
-            'Bauer':'#e67e22',
-            'Test':'#636e72'
+            'LoF':0x6c5ce7,
+            'Bauer':0xe17055,
+            'Combinator':0xfd79a8,
+            'Surreal':0x0984e3,
+            'Numbers':0x00b894,
+            'Quantum':0x9b59b6,
+            'Topos':0xf39c12,
+            'Test':0x636e72
           }
-          return map[fam] || '#90a4ae'
+          return map[fam] || 0x90a4ae
         }
 
-        const escapeHtml = (s) => String(s).replace(/[&<>\"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c))
-        const showDetails = (it) => {
-          const loc = it.path ? `${it.path}:${it.line||1}` : ''
-          details.style.display = 'block'
-          details.innerHTML =
-            `<h3>${escapeHtml(it.name||'')}</h3>` +
-            `<div class="muted">${escapeHtml(it.kind||'')} · <code>${escapeHtml(it.family||'')}</code></div>` +
-            (loc ? `<div style="margin-top:6px"><code>${escapeHtml(loc)}</code></div>` : '') +
-            (it.snippet ? `<div style="margin-top:10px" class="muted">${escapeHtml(it.snippet)}</div>` : '')
-        }
+        const renderer = new THREE.WebGLRenderer({ antialias: true })
+        renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1))
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        document.body.appendChild(renderer.domElement)
 
-        const showTip = (sx, sy, text) => {
-          tip.style.display = 'block'
-          tip.style.left = (sx + 12) + 'px'
-          tip.style.top = (sy + 12) + 'px'
-          tip.textContent = text
-        }
-        const hideTip = () => { tip.style.display='none' }
+        const scene = new THREE.Scene()
+        scene.background = new THREE.Color(0x0b0f14)
 
-        let selected = null
-        let hover = null
-        let query = ''
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, 200)
 
-        const matchesQuery = (it) => {
-          const ql = query.trim().toLowerCase()
-          if (!ql) return true
-          return String(it?.name ?? '').toLowerCase().includes(ql)
-        }
+        const light = new THREE.DirectionalLight(0xffffff, 0.9)
+        light.position.set(2, 3, 4)
+        scene.add(light)
+        scene.add(new THREE.AmbientLight(0xffffff, 0.35))
 
-        const cam = { yaw: 0.95, pitch: 0.62, zoom: 1.25 }
+        const group = new THREE.Group()
+        scene.add(group)
 
-        const pos3 = items.map((it) => {
-          const p = it?.pos3 ?? { x: 0.5, y: 0.5, z: 0.5 }
-          return { x: (p.x - 0.5), y: (p.y - 0.5), z: (p.z - 0.5) }
-        })
+        // normalize pos3 to a centered cube
+        const pts = items.map(it => it.pos3 || {x:Math.random(), y:Math.random(), z:Math.random()})
+        let minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9,minz=1e9,maxz=-1e9
+        for (const p of pts){ minx=Math.min(minx,p.x); maxx=Math.max(maxx,p.x); miny=Math.min(miny,p.y); maxy=Math.max(maxy,p.y); minz=Math.min(minz,p.z); maxz=Math.max(maxz,p.z) }
+        const cx=(minx+maxx)/2, cy=(miny+maxy)/2, cz=(minz+maxz)/2
+        const s = 2 / Math.max(1e-6, (maxx-minx), (maxy-miny), (maxz-minz))
+        const xyz = pts.map(p => ({ x:(p.x-cx)*s, y:(p.y-cy)*s, z:(p.z-cz)*s }))
 
-        const nodeEls = new Array(items.length)
-        for (let i = 0; i < items.length; i++) {
+        const geom = new THREE.SphereGeometry(0.018, 14, 14)
+        const meshes = []
+        for (let i=0;i<items.length;i++){
           const it = items[i]
-          const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-          c.setAttribute('class', 'node')
-          c.setAttribute('r', '3.6')
-          c.setAttribute('fill', colorForFamily(it?.family))
-          c.dataset.idx = String(i)
-          nodesG.appendChild(c)
-          nodeEls[i] = c
+          const m = new THREE.MeshPhongMaterial({
+            color: colorForFamily(it.family || ''),
+            shininess: 30
+          })
+          const mesh = new THREE.Mesh(geom, m)
+          mesh.position.set(xyz[i].x, xyz[i].y, xyz[i].z)
+          mesh.userData = { idx: i }
+          group.add(mesh)
+          meshes.push(mesh)
         }
 
-        const edgeEls = []
-        for (const [i, j] of edges) {
-          const p = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-          p.setAttribute('class', 'edge')
-          p.setAttribute('fill', 'none')
-          p.dataset.i = String(i)
-          p.dataset.j = String(j)
-          edgesG.appendChild(p)
-          edgeEls.push(p)
+        // edges as one LineSegments
+        const seg = new Float32Array(edges.length * 2 * 3)
+        let k = 0
+        for (const [i,j] of edges){
+          const a = xyz[i], b = xyz[j]
+          if (!a || !b) continue
+          seg[k++] = a.x; seg[k++] = a.y; seg[k++] = a.z
+          seg[k++] = b.x; seg[k++] = b.y; seg[k++] = b.z
         }
+        const edgeGeom = new THREE.BufferGeometry()
+        edgeGeom.setAttribute('position', new THREE.BufferAttribute(seg, 3))
+        const edgeMat = new THREE.LineBasicMaterial({ color: 0xb0bec5, transparent: true, opacity: 0.35 })
+        const edgeLines = new THREE.LineSegments(edgeGeom, edgeMat)
+        scene.add(edgeLines)
 
-        const curvePath = (a, b) => {
-          const dx = b.x - a.x
-          const dy = b.y - a.y
-          const d = Math.hypot(dx, dy)
-          if (d < 1e-6) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`
-          const nx = -dy / d
-          const ny = dx / d
-          const bend = Math.max(10, Math.min(28, 0.75 * d + 10))
-          const cx = (a.x + b.x) / 2 + nx * bend
-          const cy = (a.y + b.y) / 2 + ny * bend
-          return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`
+        // camera controls (orbit + optional pan)
+        const state = { dragging: false, panning: false, x0:0, y0:0, theta: 0.6, phi: 1.0, r: 3.2, tx:0, ty:0, tz:0 }
+        const clamp = (x, a, b) => Math.max(a, Math.min(b, x))
+        const updateCamera = () => {
+          state.phi = clamp(state.phi, 0.05, Math.PI - 0.05)
+          const sinPhi = Math.sin(state.phi)
+          const px = state.tx + state.r * sinPhi * Math.cos(state.theta)
+          const py = state.ty + state.r * Math.cos(state.phi)
+          const pz = state.tz + state.r * sinPhi * Math.sin(state.theta)
+          camera.position.set(px, py, pz)
+          camera.lookAt(state.tx, state.ty, state.tz)
         }
+        updateCamera()
 
-        const project = (p) => {
-          const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw)
-          const cx = Math.cos(cam.pitch), sx = Math.sin(cam.pitch)
-
-          const x1 = p.x * cy + p.z * sy
-          const z1 = -p.x * sy + p.z * cy
-          const y2 = p.y * cx - z1 * sx
-          const z2 = p.y * sx + z1 * cx
-
-          const scale = 860 * cam.zoom
-          const x = (W / 2) + x1 * scale
-          const y = (H / 2) - y2 * scale
-          return { x, y, z: z2 }
+        const onDown = (ev) => {
+          state.dragging = true
+          state.panning = ev.shiftKey || ev.button === 2
+          state.x0 = ev.clientX
+          state.y0 = ev.clientY
         }
-
-        let raf = null
-        const requestRender = () => {
-          if (raf) return
-          raf = requestAnimationFrame(() => { raf = null; render() })
-        }
-
-        const render = () => {
-          const ql = query.trim().toLowerCase()
-          const filtering = Boolean(ql)
-
-          const proj = new Array(items.length)
-          for (let i = 0; i < items.length; i++) proj[i] = project(pos3[i])
-
-          const show = showEdges.checked
-          for (const el of edgeEls) {
-            if (!show) {
-              el.setAttribute('display', 'none')
-              continue
-            }
-            el.setAttribute('display', 'inline')
-            const i = Number(el.dataset.i)
-            const j = Number(el.dataset.j)
-            const a = proj[i], b = proj[j]
-            el.setAttribute('d', curvePath(a, b))
-            if (!filtering) {
-              el.setAttribute('opacity', '0.50')
-            } else {
-              const ok = matchesQuery(items[i]) && matchesQuery(items[j])
-              el.setAttribute('opacity', ok ? '0.70' : '0.06')
-            }
+        const onUp = () => { state.dragging = false; state.panning = false }
+        const onMove = (ev) => {
+          if (!state.dragging) return
+          const dx = ev.clientX - state.x0
+          const dy = ev.clientY - state.y0
+          state.x0 = ev.clientX
+          state.y0 = ev.clientY
+          if (state.panning) {
+            const panScale = 0.0025 * state.r
+            const dir = new THREE.Vector3()
+            camera.getWorldDirection(dir)
+            const right = new THREE.Vector3().crossVectors(dir, camera.up).normalize()
+            const up = new THREE.Vector3().copy(camera.up).normalize()
+            state.tx -= right.x * dx * panScale
+            state.ty -= right.y * dx * panScale
+            state.tz -= right.z * dx * panScale
+            state.tx += up.x * dy * panScale
+            state.ty += up.y * dy * panScale
+            state.tz += up.z * dy * panScale
+          } else {
+            state.theta -= dx * 0.006
+            state.phi -= dy * 0.006
           }
-
-          for (let i = 0; i < items.length; i++) {
-            const it = items[i]
-            const el = nodeEls[i]
-            const p = proj[i]
-            const depth = p.z
-
-            const hit = (i === selected) || (i === hover)
-            const match = !filtering || matchesQuery(it)
-
-            const depthBoost = 1 + 0.55 * depth
-            const base = 3.4 * Math.max(0.65, Math.min(1.65, depthBoost))
-            const r = hit ? base * 1.65 : match ? base : base * 0.85
-
-            el.classList.toggle('hit', hit)
-            el.setAttribute('cx', String(p.x))
-            el.setAttribute('cy', String(p.y))
-            el.setAttribute('r', String(r))
-            el.setAttribute('opacity', match ? '0.95' : '0.12')
-          }
+          updateCamera()
         }
-
-        let dragging = null
-        svg.addEventListener('mousedown', (ev) => {
-          const target = ev.target
-          if (target && target.classList && target.classList.contains('node')) return
-          dragging = { x: ev.clientX, y: ev.clientY, yaw: cam.yaw, pitch: cam.pitch }
-        })
-        window.addEventListener('mousemove', (ev) => {
-          if (!dragging) return
-          const dx = (ev.clientX - dragging.x)
-          const dy = (ev.clientY - dragging.y)
-          cam.yaw = dragging.yaw + dx * 0.006
-          cam.pitch = Math.max(-1.45, Math.min(1.45, dragging.pitch + dy * 0.006))
-          requestRender()
-        })
-        window.addEventListener('mouseup', () => { dragging = null })
-
-        svg.addEventListener('wheel', (ev) => {
+        const onWheel = (ev) => {
           ev.preventDefault()
-          const delta = Math.sign(ev.deltaY)
-          const factor = delta > 0 ? 0.90 : 1.11
-          cam.zoom = Math.max(0.35, Math.min(6.0, cam.zoom * factor))
-          requestRender()
-        }, { passive: false })
-
-        const hitTest = (sx, sy) => {
-          const mx = (sx / svg.clientWidth) * W
-          const my = (sy / svg.clientHeight) * H
-          const ql = query.trim().toLowerCase()
-          const filtering = Boolean(ql)
-          let best = null
-          let bestD = Infinity
-          const r2 = 12 * 12
-
-          for (let i = 0; i < items.length; i++) {
-            if (filtering && !matchesQuery(items[i])) continue
-            const el = nodeEls[i]
-            const cx = Number(el.getAttribute('cx') || 0)
-            const cy = Number(el.getAttribute('cy') || 0)
-            const d = (cx - mx) * (cx - mx) + (cy - my) * (cy - my)
-            if (d < bestD) { bestD = d; best = i }
-          }
-          if (best !== null && bestD <= r2) return best
-          return null
+          const factor = ev.deltaY > 0 ? 1.08 : 0.93
+          state.r = clamp(state.r * factor, 0.5, 40)
+          updateCamera()
         }
 
-        svg.addEventListener('mousemove', (ev) => {
-          const h = hitTest(ev.offsetX, ev.offsetY)
-          hover = h
-          if (hover !== null) showTip(ev.clientX, ev.clientY, items[hover]?.name ?? '')
-          else hideTip()
-          requestRender()
-        })
+        renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault())
+        renderer.domElement.addEventListener('mousedown', onDown)
+        window.addEventListener('mouseup', onUp)
+        window.addEventListener('mousemove', onMove)
+        renderer.domElement.addEventListener('wheel', onWheel, { passive:false })
 
-        svg.addEventListener('click', (ev) => {
-          const h = hitTest(ev.offsetX, ev.offsetY)
-          selected = h
-          if (selected !== null) showDetails(items[selected])
-          else details.style.display = 'none'
-          requestRender()
-        })
+        // hover/click picking (disabled in embed mode to keep the preview lightweight)
+        if (!EMBED) {
+          const raycaster = new THREE.Raycaster()
+          const mouse = new THREE.Vector2()
+          let hover = null
+          let selected = null
+          const showTip = (sx, sy, it) => {
+            tip.style.display = 'block'
+            tip.style.left = (sx + 12) + 'px'
+            tip.style.top = (sy + 12) + 'px'
+            tip.textContent = it.name
+          }
+          const hideTip = () => { tip.style.display='none' }
+          const escapeHtml = (s) => String(s).replace(/[&<>\"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c))
+          const showDetails = (it) => {
+            const loc = it.path ? `${it.path}:${it.line||1}` : ''
+            details.style.display = 'block'
+            details.innerHTML =
+              `<h3>${escapeHtml(it.name||'')}</h3>` +
+              `<div class="muted">${escapeHtml(it.kind||'')} &middot; <code>${escapeHtml(it.family||'')}</code></div>` +
+              (loc ? `<div style="margin-top:6px"><code>${escapeHtml(loc)}</code></div>` : '') +
+              (it.snippet ? `<div style="margin-top:10px" class="muted">${escapeHtml(it.snippet)}</div>` : '')
+          }
+          const pick = (ev) => {
+            const rect = renderer.domElement.getBoundingClientRect()
+            mouse.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1
+            mouse.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1
+            raycaster.setFromCamera(mouse, camera)
+            const hits = raycaster.intersectObjects(meshes, false)
+            if (!hits.length) return null
+            const idx = hits[0].object.userData?.idx
+            return (typeof idx === 'number') ? idx : null
+          }
+          renderer.domElement.addEventListener('mousemove', (ev) => {
+            const idx = pick(ev)
+            hover = idx
+            if (hover !== null) showTip(ev.clientX, ev.clientY, items[hover])
+            else hideTip()
+          })
+          renderer.domElement.addEventListener('click', (ev) => {
+            const idx = pick(ev)
+            selected = idx
+            for (let i=0;i<meshes.length;i++){
+              const it = items[i]
+              meshes[i].material.color.setHex(colorForFamily(it.family||''))
+            }
+            if (selected !== null){
+              meshes[selected].material.color.setHex(0xffffff)
+              showDetails(items[selected])
+            } else {
+              details.style.display='none'
+            }
+          })
+        }
 
-        q.addEventListener('input', () => {
-          query = q.value
-          requestRender()
-        })
-        showEdges.addEventListener('change', requestRender)
+        const animate = () => {
+          if (EMBED && !state.dragging) {
+            state.theta += 0.0015
+            updateCamera()
+          }
+          renderer.render(scene, camera)
+          requestAnimationFrame(animate)
+        }
+        animate()
 
-        resetBtn.addEventListener('click', () => {
-          cam.yaw = 0.95
-          cam.pitch = 0.62
-          cam.zoom = 1.25
-          requestRender()
+        window.addEventListener('resize', () => {
+          renderer.setSize(window.innerWidth, window.innerHeight)
+          camera.aspect = window.innerWidth / window.innerHeight
+          camera.updateProjectionMatrix()
         })
-
-        render()
       })()
     </script>
   </body>

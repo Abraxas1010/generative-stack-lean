@@ -18,35 +18,25 @@
       #details h3 { margin: 0 0 8px; font-size: 14px; }
       .muted { color:#b8c7d9; }
       .row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
+      canvas { display:block; }
       a { color:#8ab4f8; text-decoration:none; }
       a:hover{ text-decoration:underline; }
       code { background:#0b1320; border:1px solid #24364a; border-radius: 6px; padding:1px 6px; }
-      svg { display:block; width: 100vw; height: 100vh; }
-      .edge { stroke: rgba(245, 248, 252, 0.55); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-      .node { stroke: rgba(255,255,255,0.12); stroke-width: 1.0; vector-effect: non-scaling-stroke; }
-      .node.hit { stroke: rgba(255,255,255,0.85); stroke-width: 1.7; }
     </style>
   </head>
   <body>
     <div id="ui" class="row">
       <div class="panel row">
-        <a href="../../index.html">&larr; index</a>
+        <a href="./index.html">&larr; index</a>
         <input id="q" type="text" placeholder="Search declarations (substring)..." />
         <label><input id="showEdges" type="checkbox" checked /> edges</label>
-        <span id="edgeCount" class="muted"></span>
         <button id="fit">Fit</button>
       </div>
-      <div class="panel muted">Pan: drag · Zoom: wheel · Select: click</div>
+      <div class="panel muted">Pan: drag &middot; Zoom: wheel &middot; Select: click</div>
     </div>
     <div id="tip"></div>
     <div id="details" class="panel" style="display:none"></div>
-
-    <svg id="svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" role="img" aria-label="2D proof map">
-      <g id="viewport">
-        <g id="edges"></g>
-        <g id="nodes"></g>
-      </g>
-    </svg>
+    <canvas id="c"></canvas>
 
     <script src="./generative_proofs_data.js"></script>
     <script>
@@ -54,237 +44,207 @@
         const data = window.GENERATIVE_PROOFS || { items: [], edges: [] }
         const items = data.items || []
         const edges = data.edges || []
-
-        const svg = document.getElementById('svg')
-        const viewport = document.getElementById('viewport')
-        const edgesG = document.getElementById('edges')
-        const nodesG = document.getElementById('nodes')
-
+        const canvas = document.getElementById('c')
+        const ctx = canvas.getContext('2d')
         const tip = document.getElementById('tip')
         const details = document.getElementById('details')
         const q = document.getElementById('q')
         const showEdges = document.getElementById('showEdges')
-        const edgeCount = document.getElementById('edgeCount')
         const fitBtn = document.getElementById('fit')
-
-        edgeCount.textContent = `(${edges.length} edges)`
-
-        const W = 1000
-        const H = 700
-        const M = 36
 
         const colorForFamily = (fam) => {
           const map = {
             'LoF':'#6c5ce7',
-            'Eigenform':'#e17055',
-            'Lawvere':'#e94560',
-            'Surreal':'#0984e3',
+            'Bauer':'#e17055',
             'Combinator':'#fd79a8',
-            'Ratchet':'#00b894',
+            'Surreal':'#0984e3',
+            'Numbers':'#00b894',
             'Quantum':'#9b59b6',
-            'HoTT':'#f39c12',
-            'Bauer':'#e67e22',
+            'Topos':'#f39c12',
             'Test':'#636e72'
           }
           return map[fam] || '#90a4ae'
         }
 
-        const toWorld = (p) => {
-          const x = M + (p?.x ?? 0.5) * (W - 2*M)
-          const y = M + (1 - (p?.y ?? 0.5)) * (H - 2*M)
-          return { x, y }
-        }
-
-        let selected = null
+        const margin = 24
+        const view = { s: 1.0, ox: 0, oy: 0 }
+        let dragging = null
         let hover = null
+        let selected = null
         let query = ''
 
-        const view = { panX: 0, panY: 0, scale: 1 }
-        const setTransform = () => {
-          viewport.setAttribute('transform', `translate(${view.panX},${view.panY}) scale(${view.scale})`)
+        const visibleIdx = () => {
+          const ql = query.trim().toLowerCase()
+          const idx = []
+          for (let i=0;i<items.length;i++){
+            const it = items[i]
+            if (!it) continue
+            if (!ql || String(it.name||'').toLowerCase().includes(ql)) idx.push(i)
+          }
+          return idx
         }
-        setTransform()
+        let vis = visibleIdx()
 
-        const escapeHtml = (s) => String(s).replace(/[&<>\"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c))
+        const resize = () => {
+          canvas.width = window.innerWidth
+          canvas.height = window.innerHeight
+          render()
+        }
+
+        const toX = (px) => margin + px * (canvas.width - 2*margin) * view.s + view.ox
+        const toY = (py) => margin + (1 - py) * (canvas.height - 2*margin) * view.s + view.oy
+        const fromX = (sx) => (sx - margin - view.ox) / ((canvas.width - 2*margin) * view.s)
+        const fromY = (sy) => 1 - (sy - margin - view.oy) / ((canvas.height - 2*margin) * view.s)
+
+        const fit = () => {
+          vis = visibleIdx()
+          if (!vis.length) return
+          let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9
+          for (const i of vis){
+            const p = items[i].pos || {x:0.5,y:0.5}
+            minX = Math.min(minX, p.x); maxX=Math.max(maxX,p.x)
+            minY = Math.min(minY, p.y); maxY=Math.max(maxY,p.y)
+          }
+          const pad = 0.10
+          const w = Math.max(0.02, (maxX-minX)*(1+pad))
+          const h = Math.max(0.02, (maxY-minY)*(1+pad))
+          view.s = Math.max(0.3, Math.min(10, Math.min(1/w, 1/h)))
+          const cx=(minX+maxX)/2, cy=(minY+maxY)/2
+          const targetX = canvas.width/2
+          const targetY = canvas.height/2
+          const innerW = canvas.width - 2*margin
+          const innerH = canvas.height - 2*margin
+          view.ox = targetX - (margin + cx * innerW * view.s)
+          view.oy = targetY - (margin + (1-cy) * innerH * view.s)
+          render()
+        }
+        fitBtn.addEventListener('click', fit)
+
+        const dist2 = (a,b,c,d) => (a-c)*(a-c)+(b-d)*(b-d)
+        const hitTest = (sx, sy) => {
+          let best = null
+          let bestD = Infinity
+          for (const i of vis){
+            const p = items[i].pos
+            if (!p) continue
+            const x = toX(p.x), y = toY(p.y)
+            const d = dist2(sx, sy, x, y)
+            if (d < bestD) { bestD = d; best = i }
+          }
+          const r = 12
+          if (best !== null && bestD <= r*r) return best
+          return null
+        }
+
+        const showTip = (sx, sy, it) => {
+          tip.style.display = 'block'
+          tip.style.left = (sx + 12) + 'px'
+          tip.style.top = (sy + 12) + 'px'
+          tip.textContent = it.name
+        }
+        const hideTip = () => { tip.style.display='none' }
+
         const showDetails = (it) => {
           const loc = it.path ? `${it.path}:${it.line||1}` : ''
           details.style.display = 'block'
           details.innerHTML =
             `<h3>${escapeHtml(it.name||'')}</h3>` +
-            `<div class="muted">${escapeHtml(it.kind||'')} · <code>${escapeHtml(it.family||'')}</code></div>` +
+            `<div class="muted">${escapeHtml(it.kind||'')} &middot; <code>${escapeHtml(it.family||'')}</code></div>` +
             (loc ? `<div style="margin-top:6px"><code>${escapeHtml(loc)}</code></div>` : '') +
             (it.snippet ? `<div style="margin-top:10px" class="muted">${escapeHtml(it.snippet)}</div>` : '')
         }
 
-        const showTip = (sx, sy, text) => {
-          tip.style.display = 'block'
-          tip.style.left = (sx + 12) + 'px'
-          tip.style.top = (sy + 12) + 'px'
-          tip.textContent = text
-        }
-        const hideTip = () => { tip.style.display='none' }
+        const escapeHtml = (s) => String(s).replace(/[&<>\"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c))
 
-        const matchesQuery = (it) => {
-          const ql = query.trim().toLowerCase()
-          if (!ql) return true
-          return String(it?.name ?? '').toLowerCase().includes(ql)
-        }
+        const render = () => {
+          vis = visibleIdx()
+          ctx.clearRect(0,0,canvas.width,canvas.height)
+          ctx.fillStyle = '#0b0f14'
+          ctx.fillRect(0,0,canvas.width,canvas.height)
 
-        const nodeEls = new Array(items.length)
-        const worldPos = new Array(items.length)
+          // edges
+          if (showEdges.checked) {
+            ctx.lineWidth = 1
+            ctx.strokeStyle = 'rgba(207,216,220,0.35)'
+            ctx.beginPath()
+            const visSet = new Set(vis)
+            for (const [i,j] of edges){
+              if (!visSet.has(i) || !visSet.has(j)) continue
+              const a = items[i].pos, b = items[j].pos
+              if (!a || !b) continue
+              ctx.moveTo(toX(a.x), toY(a.y))
+              ctx.lineTo(toX(b.x), toY(b.y))
+            }
+            ctx.stroke()
+          }
 
-        for (let i = 0; i < items.length; i++) {
-          const it = items[i]
-          worldPos[i] = toWorld(it?.pos)
-          const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-          c.setAttribute('class', 'node')
-          c.setAttribute('r', '2.2')
-          c.setAttribute('cx', String(worldPos[i].x))
-          c.setAttribute('cy', String(worldPos[i].y))
-          c.setAttribute('fill', colorForFamily(it?.family))
-          c.dataset.idx = String(i)
-          nodesG.appendChild(c)
-          nodeEls[i] = c
-        }
-
-        const edgeEls = []
-        const curvePath = (a, b) => {
-          const dx = b.x - a.x
-          const dy = b.y - a.y
-          const d = Math.hypot(dx, dy)
-          if (d < 1e-6) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`
-          const nx = -dy / d
-          const ny = dx / d
-          const bend = Math.max(10, Math.min(28, 0.75 * d + 10))
-          const cx = (a.x + b.x) / 2 + nx * bend
-          const cy = (a.y + b.y) / 2 + ny * bend
-          return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`
-        }
-
-        for (const [i, j] of edges) {
-          const a = worldPos[i]
-          const b = worldPos[j]
-          if (!a || !b) continue
-          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-          path.setAttribute('class', 'edge')
-          path.setAttribute('fill', 'none')
-          path.setAttribute('d', curvePath(a, b))
-          path.dataset.i = String(i)
-          path.dataset.j = String(j)
-          edgesG.appendChild(path)
-          edgeEls.push(path)
-        }
-
-        const applyStyles = () => {
-          const ql = query.trim().toLowerCase()
-          const filtering = Boolean(ql)
-
-          for (let i = 0; i < items.length; i++) {
+          // nodes
+          for (const i of vis){
             const it = items[i]
-            const el = nodeEls[i]
-            const hit = (i === selected) || (i === hover)
-            const match = !filtering || matchesQuery(it)
-            el.classList.toggle('hit', hit)
-            el.setAttribute('opacity', match ? '0.95' : '0.12')
-            el.setAttribute('r', hit ? '5.2' : match ? '2.2' : '1.8')
-          }
-
-          const show = showEdges.checked
-          for (const el of edgeEls) {
-            if (!show) {
-              el.setAttribute('display', 'none')
-              continue
+            const p = it.pos
+            if (!p) continue
+            const x = toX(p.x), y = toY(p.y)
+            const base = 3.4
+            const r = (i === selected ? base*1.9 : i === hover ? base*1.5 : base)
+            ctx.beginPath()
+            ctx.fillStyle = colorForFamily(it.family || '')
+            ctx.globalAlpha = 0.95
+            ctx.arc(x, y, r, 0, Math.PI*2)
+            ctx.fill()
+            if (i === selected) {
+              ctx.globalAlpha = 1
+              ctx.strokeStyle = '#ffffff'
+              ctx.lineWidth = 1.2
+              ctx.stroke()
             }
-            el.setAttribute('display', 'inline')
-            if (!filtering) {
-              el.setAttribute('opacity', '0.55')
-              continue
-            }
-            const i = Number(el.dataset.i)
-            const j = Number(el.dataset.j)
-            const ok = matchesQuery(items[i]) && matchesQuery(items[j])
-            el.setAttribute('opacity', ok ? '0.75' : '0.06')
           }
+          ctx.globalAlpha = 1
         }
 
-        // Pan/zoom
-        let dragging = null
-        svg.addEventListener('mousedown', (ev) => {
-          const target = ev.target
-          if (target && target.classList && target.classList.contains('node')) return
-          dragging = { x: ev.clientX, y: ev.clientY, panX: view.panX, panY: view.panY }
-        })
-        window.addEventListener('mousemove', (ev) => {
-          if (!dragging) return
-          view.panX = dragging.panX + (ev.clientX - dragging.x)
-          view.panY = dragging.panY + (ev.clientY - dragging.y)
-          setTransform()
+        canvas.addEventListener('mousedown', (ev) => {
+          dragging = { x: ev.clientX, y: ev.clientY, ox: view.ox, oy: view.oy }
         })
         window.addEventListener('mouseup', () => { dragging = null })
-
-        svg.addEventListener('wheel', (ev) => {
-          ev.preventDefault()
-          const delta = Math.sign(ev.deltaY)
-          const factor = delta > 0 ? 0.90 : 1.11
-          const next = Math.max(0.2, Math.min(8.0, view.scale * factor))
-          const mx = (ev.offsetX / svg.clientWidth) * W
-          const my = (ev.offsetY / svg.clientHeight) * H
-          const wx = (mx - view.panX) / view.scale
-          const wy = (my - view.panY) / view.scale
-          view.scale = next
-          view.panX = mx - wx * view.scale
-          view.panY = my - wy * view.scale
-          setTransform()
-        }, { passive: false })
-
-        const hitTest = (sx, sy) => {
-          const mx = (sx / svg.clientWidth) * W
-          const my = (sy / svg.clientHeight) * H
-          const wx = (mx - view.panX) / view.scale
-          const wy = (my - view.panY) / view.scale
-          let best = null
-          let bestD = Infinity
-          const r2 = 10 * 10
-          for (let i = 0; i < items.length; i++) {
-            const p = worldPos[i]
-            const d = (p.x - wx) * (p.x - wx) + (p.y - wy) * (p.y - wy)
-            if (d < bestD) { bestD = d; best = i }
+        window.addEventListener('mousemove', (ev) => {
+          if (dragging) {
+            view.ox = dragging.ox + (ev.clientX - dragging.x)
+            view.oy = dragging.oy + (ev.clientY - dragging.y)
+            render()
+            return
           }
-          if (best !== null && bestD <= r2) return best
-          return null
-        }
-
-        svg.addEventListener('mousemove', (ev) => {
-          const h = hitTest(ev.offsetX, ev.offsetY)
+          const h = hitTest(ev.clientX, ev.clientY)
           hover = h
-          if (hover !== null) showTip(ev.clientX, ev.clientY, items[hover]?.name ?? '')
+          if (hover !== null) showTip(ev.clientX, ev.clientY, items[hover])
           else hideTip()
-          applyStyles()
+          render()
         })
-
-        svg.addEventListener('click', (ev) => {
-          const h = hitTest(ev.offsetX, ev.offsetY)
+        canvas.addEventListener('click', (ev) => {
+          const h = hitTest(ev.clientX, ev.clientY)
           selected = h
           if (selected !== null) showDetails(items[selected])
-          else details.style.display = 'none'
-          applyStyles()
+          else details.style.display='none'
+          render()
         })
+        canvas.addEventListener('wheel', (ev) => {
+          ev.preventDefault()
+          const s0 = view.s
+          const delta = Math.sign(ev.deltaY)
+          const factor = delta > 0 ? 0.90 : 1.11
+          view.s = Math.max(0.15, Math.min(25, view.s * factor))
+          const px = fromX(ev.clientX), py = fromY(ev.clientY)
+          const innerW = (canvas.width - 2*margin)
+          const innerH = (canvas.height - 2*margin)
+          view.ox = ev.clientX - (margin + px * innerW * view.s)
+          view.oy = ev.clientY - (margin + (1-py) * innerH * view.s)
+          if (Math.abs(view.s - s0) < 1e-6) return
+          render()
+        }, { passive:false })
 
-        q.addEventListener('input', () => {
-          query = q.value
-          applyStyles()
-        })
-        showEdges.addEventListener('change', applyStyles)
+        q.addEventListener('input', () => { query = q.value; fit() })
 
-        const fit = () => {
-          view.panX = 0
-          view.panY = 0
-          view.scale = 1
-          setTransform()
-        }
-        fitBtn.addEventListener('click', fit)
-
-        applyStyles()
+        window.addEventListener('resize', resize)
+        resize()
+        fit()
       })()
     </script>
   </body>
