@@ -103,7 +103,7 @@ Explore the proof structure in 2D and 3D:
 <strong>2D Proof Map</strong><br/>
 <em>Pan, zoom, search declarations</em><br/>
 <a href="https://abraxas1010.github.io/generative-stack-lean/umap_2d.html">
-  <img src="artifacts/visuals/generative_2d_preview.svg" alt="UMAP 2D preview" width="100%"/>
+  <img src="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_2d_preview.svg" alt="UMAP 2D preview" width="100%"/>
 </a><br/>
 <a href="https://abraxas1010.github.io/generative-stack-lean/umap_2d.html">umap_2d.html</a> (GitHub Pages)
 </td>
@@ -111,8 +111,7 @@ Explore the proof structure in 2D and 3D:
 <strong>3D Proof Map</strong><br/>
 <em>Rotate, zoom, explore clusters</em><br/>
 <a href="https://abraxas1010.github.io/generative-stack-lean/umap_3d.html">
-  <!-- GitHub README rendering may disable SVG animation; use the static preview here. -->
-  <img src="artifacts/visuals/generative_3d_preview.svg" alt="UMAP 3D preview" width="100%"/>
+  <img src="https://abraxas1010.github.io/generative-stack-lean/artifacts/visuals/generative_3d_preview_animated.svg" alt="UMAP 3D preview" width="100%"/>
 </a><br/>
 <a href="https://abraxas1010.github.io/generative-stack-lean/umap_3d.html">umap_3d.html</a> (GitHub Pages)
 </td>

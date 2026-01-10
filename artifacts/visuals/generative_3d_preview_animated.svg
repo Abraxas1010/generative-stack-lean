@@ -437,5 +437,5 @@
     </g>
   </g>
   <text x="15" y="25" fill="#e94560" font-family="system-ui" font-size="14" font-weight="600">3D Proof Map</text>
-  <text x="15" y="42" fill="#b8c7d9" font-family="system-ui" font-size="10">WebGL · Rotate · Zoom · Select</text>
+  <text x="15" y="42" fill="#b8c7d9" font-family="system-ui" font-size="10">Rotate · Zoom · Select</text>
 </svg>
